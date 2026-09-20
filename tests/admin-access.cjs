@@ -54,7 +54,7 @@ test('producción conserva APP_URL como único origen permitido', () => {
   process.env.NODE_ENV = 'production';
   process.env.APP_URL = 'https://restaurante.example';
   try {
-    for (const [origin, expectedStatus] of [['https://restaurante.example', undefined], ['http://127.0.0.1:3000', 403]]) {
+    for (const [origin, expectedStatus] of [['https://restaurante.example', undefined], ['http://127.0.0.1:3000', 403], ['null', 403]]) {
       let called = false;
       sameOrigin({ method: 'POST', protocol: 'http', get: key => key === 'origin' ? origin : '127.0.0.1:3000' }, {}, error => {
         called = true;

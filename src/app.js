@@ -24,6 +24,8 @@ app.set('views', process.env.NETLIFY === 'true' ? path.join(process.cwd(), 'view
 app.use(noStore);
 
 app.use(helmet({
+  // Los formularios HTML deben conservar Origin para validar su procedencia.
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],

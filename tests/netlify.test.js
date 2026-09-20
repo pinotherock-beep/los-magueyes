@@ -22,7 +22,7 @@ async function call(path, method = 'GET', body, extra = {}) {
   const response = await handler({ path, httpMethod: method, headers: {
     host: 'magueyes.example', 'x-forwarded-proto': 'https', 'x-forwarded-for': '203.0.113.10',
     cookie, 'content-type': 'application/json', origin: 'https://magueyes.example', ...extra
-  }, body: body ? JSON.stringify(body) : null, requestContext: { identity: { sourceIp: '127.0.0.1' } } }, {});
+  }, body: body == null ? null : (typeof body === 'string' ? body : JSON.stringify(body)), requestContext: { identity: { sourceIp: '127.0.0.1' } } }, {});
   const set = response.multiValueHeaders?.['set-cookie'] || (response.headers?.['set-cookie'] ? [response.headers['set-cookie']] : []);
   if (set.length) cookie = set[0].split(';')[0];
   return response;
@@ -35,9 +35,10 @@ test('función sirve EJS, HTTPS, cookie persistente y acceso administrativo con 
   expect(login.multiValueHeaders['set-cookie'][0]).toContain('Secure');
   expect(login.multiValueHeaders['set-cookie'][0]).toContain('HttpOnly');
   expect(login.headers['cache-control']).toContain('no-store');
+  expect(login.headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
   const oldCookie = cookie;
   sequelize.query.mockResolvedValueOnce([{ id: 1, name: 'Admin', email: 'admin@example.com', role: 'admin', password_hash: await bcrypt.hash('Seguro123456!', 4) }]);
-  const auth = await call('/auth/login', 'POST', { _csrf: csrf(login.body), email: 'admin@example.com', password: 'Seguro123456!' });
+  const auth = await call('/auth/login', 'POST', new URLSearchParams({ _csrf: csrf(login.body), email: 'admin@example.com', password: 'Seguro123456!' }).toString(), { 'content-type': 'application/x-www-form-urlencoded' });
   expect(auth.statusCode).toBe(302);
   expect(cookie).not.toBe(oldCookie);
   sequelize.query.mockResolvedValueOnce([{ products: 41, pending: 1, today_orders: 1, today_sales: '64.00' }]);
