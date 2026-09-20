@@ -1,0 +1,74 @@
+<%- include('../../partials/header', { title }) %>
+<div class="admin-shell">
+  <%- include('../../partials/adminNav') %>
+  <section class="admin-content">
+    <div class="admin-heading">
+      <div><p class="eyebrow">Operación</p><h1>Pedidos por turno</h1></div>
+    </div>
+
+    <section class="orders-section" aria-labelledby="active-orders-title">
+      <div class="orders-section-heading">
+        <div><h2 id="active-orders-title">Cola activa</h2><p>El pedido más antiguo siempre aparece primero.</p></div>
+        <strong><%= orders.length %> activos</strong>
+      </div>
+      <div class="orders-list">
+        <% if (!orders.length) { %><div class="admin-card"><p>No hay pedidos activos.</p></div><% } %>
+        <% orders.forEach(order => { %>
+          <article class="order-card <%= order.queuePosition === 1 ? 'order-next' : '' %>">
+            <div class="order-number">
+              <span>Pedido</span>
+              <strong>#<%= String(order.id).padStart(4, '0') %></strong>
+              <small>Turno <%= order.queuePosition %></small>
+            </div>
+            <div class="order-info">
+              <% if (order.queuePosition === 1) { %><span class="queue-badge">Siguiente por atender</span><% } %>
+              <h2><%= order.customer_name %></h2>
+              <p class="customer-address"><strong>Dirección:</strong> <%= order.address %></p>
+              <p><%= order.detail %></p>
+              <small><%= order.phone %> · <%= order.order_type === 'llevar' ? 'Para llevar' : 'En local' %> · <%= new Date(order.created_at).toLocaleString('es-MX') %></small>
+              <% if (order.notes) { %><p class="note">Nota: <%= order.notes %></p><% } %>
+            </div>
+            <strong class="order-total">$<%= Number(order.total).toFixed(2) %></strong>
+            <form action="/admin/pedidos/<%= order.id %>/estado" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <label>Estado
+                <select name="status" data-auto-submit>
+                  <% [['pendiente','Pendiente'],['preparando','Preparando'],['listo','Listo'],['entregado','Entregado'],['cancelado','Cancelado']].forEach(option => { %>
+                    <option value="<%= option[0] %>" <%= order.status === option[0] ? 'selected' : '' %>><%= option[1] %></option>
+                  <% }) %>
+                </select>
+              </label>
+            </form>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="orders-section orders-history" aria-labelledby="history-orders-title">
+      <div class="orders-section-heading">
+        <div><h2 id="history-orders-title">Historial reciente</h2><p>Pedidos entregados o cancelados; el cambio más reciente aparece primero.</p></div>
+      </div>
+      <div class="orders-list">
+        <% if (!historyOrders.length) { %><div class="admin-card"><p>Aún no hay pedidos terminados.</p></div><% } %>
+        <% historyOrders.forEach(order => { %>
+          <article class="order-card">
+            <div class="order-number"><span>Pedido</span><strong>#<%= String(order.id).padStart(4, '0') %></strong></div>
+            <div class="order-info"><h2><%= order.customer_name %></h2><p class="customer-address"><strong>Dirección:</strong> <%= order.address %></p><p><%= order.detail %></p><small><%= order.phone %> · <%= order.order_type === 'llevar' ? 'Para llevar' : 'En local' %> · <%= new Date(order.created_at).toLocaleString('es-MX') %></small></div>
+            <strong class="order-total">$<%= Number(order.total).toFixed(2) %></strong>
+            <form action="/admin/pedidos/<%= order.id %>/estado" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <label>Estado
+                <select name="status" data-auto-submit>
+                  <% [['pendiente','Pendiente'],['preparando','Preparando'],['listo','Listo'],['entregado','Entregado'],['cancelado','Cancelado']].forEach(option => { %>
+                    <option value="<%= option[0] %>" <%= order.status === option[0] ? 'selected' : '' %>><%= option[1] %></option>
+                  <% }) %>
+                </select>
+              </label>
+            </form>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  </section>
+</div>
+<%- include('../../partials/footer') %>

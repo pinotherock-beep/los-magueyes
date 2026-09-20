@@ -1,0 +1,13 @@
+<%- include('../partials/header', { title }) %>
+<section class="auth-section">
+  <form class="auth-card" action="/auth/login" method="post" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <p class="eyebrow">Personal autorizado</p><h1>Iniciar sesión</h1>
+    <% if (errors.length) { %><div class="errors"><% errors.forEach(error => { %><p><%= error.msg %></p><% }) %></div><% } %>
+    <label>Correo electrónico<input type="email" name="email" value="<%= values.email || '' %>" autocomplete="username" required></label>
+    <label>Contraseña<input type="password" name="password" autocomplete="current-password" required minlength="8"></label>
+    <button class="button button-primary button-full" type="submit">Entrar al panel</button>
+    <p class="form-help">Acceso exclusivo para el personal autorizado.</p>
+  </form>
+</section>
+<%- include('../partials/footer') %>

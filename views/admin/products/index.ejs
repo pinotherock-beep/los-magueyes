@@ -1,0 +1,11 @@
+<%- include('../../partials/header', { title }) %>
+<div class="admin-shell">
+  <%- include('../../partials/adminNav') %>
+  <section class="admin-content">
+    <div class="admin-heading"><div><p class="eyebrow">Catálogo</p><h1>Productos</h1></div><a class="button button-primary" href="/admin/productos/nuevo">Nuevo producto</a></div>
+    <div class="table-wrap"><table><thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+      <% products.forEach(product => { %><tr><td><strong><%= product.name %></strong><small><%= product.description %></small></td><td><%= product.category %></td><td>$<%= Number(product.price).toFixed(2) %></td><td><span class="status status-<%= product.available ? 'active' : 'inactive' %>"><%= product.available ? 'Disponible' : 'Inactivo' %></span></td><td class="actions"><a href="/admin/productos/<%= product.id %>/editar">Editar</a><form action="/admin/productos/<%= product.id %>/eliminar" method="post" data-confirm="¿Desactivar este producto?"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit">Desactivar</button></form></td></tr><% }) %>
+    </tbody></table></div>
+  </section>
+</div>
+<%- include('../../partials/footer') %>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Green Review"
+  short_description: "Revisión de sostenibilidad con evidencia"
+  default_prompt: "Usa $green-review para revisar este proyecto y priorizar hallazgos de sostenibilidad verificables."

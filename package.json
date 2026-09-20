@@ -1,0 +1,51 @@
+{
+  "name": "los-magueyes-nodejs",
+  "version": "1.3.0",
+  "description": "Sistema web para el restaurante Los Magueyes - Barbacoa estilo Hidalgo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node scripts/start-local.js",
+    "start:production": "node --env-file=.env.production server.js",
+    "dev": "nodemon scripts/start-local.js",
+    "seed": "node scripts/setup-local.js",
+    "seed:production": "node --env-file=.env.production scripts/seed-admin.js",
+    "test": "jest --runInBand",
+    "test:admin": "node --test tests/admin-access.cjs",
+    "test:watch": "jest --watch",
+    "catalog": "node microservices/catalog-service/server.js",
+    "setup:local": "node scripts/setup-local.js",
+    "check:local": "node scripts/check-local.js",
+    "test:local": "node --test tests/admin-access.cjs tests/setup-local.cjs",
+    "build": "node scripts/build-netlify.js",
+    "setup:production": "node --env-file=.env.production scripts/setup-production.js",
+    "test:all": "npm test && npm run test:local"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "mysql2": "^3.22.0",
+    "serverless-http": "^4.0.0",
+    "validator": "^13.15.35"
+  },
+  "devDependencies": {
+    "jest": "^30.1.3",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/config/**"
+    ]
+  }
+}

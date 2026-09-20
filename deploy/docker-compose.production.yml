@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Configura DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME:?Configura DB_NAME}
+      MYSQL_USER: ${DB_USER:?Configura DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Configura DB_PASSWORD}
+    volumes:
+      - mysql_production_data:/var/lib/mysql
+      - ../database/los_magueyes.sql:/docker-entrypoint-initdb.d/01-los-magueyes.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [internal]
+
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    env_file: ../.env.production
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks: [internal]
+
+volumes:
+  mysql_production_data:
+
+networks:
+  internal:
+    driver: bridge

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Green Software Engineer"
+  short_description: "Ingeniería de software sostenible y medible"
+  default_prompt: "Usa $green-software-engineer para reducir el impacto ambiental de esta aplicación con una línea base comparable."

@@ -1,0 +1,15 @@
+<%- include('../partials/header', { title }) %>
+<div class="admin-shell">
+  <%- include('../partials/adminNav') %>
+  <section class="admin-content">
+    <div class="admin-heading"><div><p class="eyebrow">Bienvenido, <%= user.name %></p><h1>Resumen del negocio</h1></div></div>
+    <div class="stats-grid">
+      <article><span>Productos</span><strong><%= stats.products %></strong></article>
+      <article><span>Pedidos pendientes</span><strong><%= stats.pending %></strong></article>
+      <article><span>Pedidos de hoy</span><strong><%= stats.today_orders %></strong></article>
+      <article><span>Venta de hoy</span><strong>$<%= Number(stats.today_sales).toFixed(2) %></strong></article>
+    </div>
+    <section class="admin-card"><h2>Acciones rápidas</h2><div class="button-row"><a class="button button-primary" href="/admin/productos/nuevo">Agregar producto</a><a class="button button-secondary" href="/admin/pedidos">Revisar pedidos</a></div></section>
+  </section>
+</div>
+<%- include('../partials/footer') %>

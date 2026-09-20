@@ -1,0 +1,30 @@
+<%- include('partials/header', { title }) %>
+<section class="page-heading">
+  <p class="eyebrow">Todos los platillos son a base de borrego</p>
+  <h1>Menú de Los Magueyes</h1>
+  <p>Agrega tus platillos favoritos y registra tu pedido. El pago se realiza directamente en el establecimiento.</p>
+</section>
+
+<div class="shop-layout" id="menu-app">
+  <section>
+    <div class="category-filter" id="category-filter"></div>
+    <div class="menu-grid" id="menu-list"><p class="loading">Cargando nuestro menú…</p></div>
+  </section>
+  <aside class="cart" aria-label="Tu pedido">
+    <h2>Tu pedido</h2>
+    <div id="cart-items"><p class="muted">Aún no agregas productos.</p></div>
+    <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+    <form id="order-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Nombre de quien hace el pedido<input name="customerName" required minlength="2" maxlength="100" autocomplete="name"></label>
+      <label>Dirección<input name="address" required minlength="5" maxlength="250" autocomplete="street-address" placeholder="Calle, número, colonia y referencias"></label>
+      <label>Teléfono<input name="phone" required inputmode="tel" minlength="8" maxlength="20" autocomplete="tel"></label>
+      <label>Tipo de pedido<select name="orderType"><option value="llevar">Para llevar</option><option value="local">Comer en el local</option></select></label>
+      <label>Notas<textarea name="notes" maxlength="300" rows="3" placeholder="Indicaciones opcionales"></textarea></label>
+      <button class="button button-primary button-full" type="submit">Confirmar pedido</button>
+      <p id="order-message" class="form-message" role="status"></p>
+    </form>
+  </aside>
+</div>
+<script src="/js/menu.js" defer></script>
+<%- include('partials/footer') %>
