@@ -28,6 +28,14 @@ Lee **[SUBIR_GITHUB_NETLIFY.md](SUBIR_GITHUB_NETLIFY.md)**, con instrucciones co
 - Configura las variables del ejemplo de producción en Netlify y prepara la base antes de utilizar pedidos o acceso administrativo.
 - No se incluyen credenciales, historial `.git` ni `node_modules` en la entrega. Las habilidades `.codex/skills` originales se conservan sin cambios.
 
+## Documentación de API con Swagger
+
+Con el servidor iniciado, abre **http://127.0.0.1:3000/api-docs/**. Incluye todas las rutas del servidor, organizadas por productos, pedidos, autenticación, administración y páginas públicas, con parámetros, ejemplos y respuestas.
+
+La especificación descargable está en `/api-docs/openapi.json`. Para el microservicio opcional de catálogo, abre `http://localhost:4001/api-docs/` después de iniciarlo con `npm run catalog`. En Netlify usa `/api-docs/` en el dominio del sitio.
+
+Swagger gestiona la cookie de sesión y el token CSRF al probar solicitudes. Para administrar, inicia sesión en otra pestaña del mismo sitio. **Los POST guardan cambios reales.** Consulta la guía e inventario completo en **[docs/API_SWAGGER.md](docs/API_SWAGGER.md)**.
+
 ## Verificación
 
 ```bash

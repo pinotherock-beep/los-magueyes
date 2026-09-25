@@ -29,6 +29,21 @@ async function call(path, method = 'GET', body, extra = {}) {
 }
 beforeEach(() => { cookie = ''; mockSessions.clear(); sequelize.query.mockReset(); });
 
+test('sirve Swagger en Netlify con recursos propios y sesión CSRF', async () => {
+  const page = await call('/.netlify/functions/app/api-docs/');
+  expect(page.statusCode).toBe(200);
+  expect(page.body).toContain('id="swagger-ui"');
+  expect(csrf(page.body)).toHaveLength(64);
+  expect(page.multiValueHeaders['set-cookie'][0]).toContain('Secure');
+  const document = await call('/api-docs/openapi.json');
+  expect(JSON.parse(document.body).paths['/api/orders'].post.summary).toBe('Registrar un pedido');
+  for (const asset of ['initializer.js', 'docs.css', 'swagger-ui.css', 'swagger-ui-bundle.js']) {
+    const result = await call(`/api-docs/assets/${asset}`);
+    expect(result.statusCode).toBe(200);
+  }
+  expect(sequelize.query).not.toHaveBeenCalled();
+});
+
 test('función sirve EJS, HTTPS, cookie persistente y acceso administrativo con sesión regenerada', async () => {
   const login = await call('/.netlify/functions/app/auth/login');
   expect(login.statusCode).toBe(200);

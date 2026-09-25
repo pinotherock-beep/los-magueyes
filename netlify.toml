@@ -8,8 +8,8 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["express", "ejs", "mysql2"]
-  included_files = ["views/**"]
+  external_node_modules = ["express", "ejs", "mysql2", "swagger-ui-dist"]
+  included_files = ["views/**", "public/js/swagger-ui.js", "public/css/swagger-docs.css"]
 
 [[redirects]]
   from = "/*"

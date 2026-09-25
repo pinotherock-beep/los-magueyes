@@ -6,6 +6,8 @@ function needsCsrfToken(req) {
   return Boolean(req.session.user)
     || req.path === '/menu'
     || req.path === '/auth/login'
+    || req.path === '/api-docs'
+    || req.path === '/api-docs/'
     || req.path.startsWith('/admin');
 }
 

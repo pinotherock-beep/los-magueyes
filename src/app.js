@@ -9,6 +9,8 @@ const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const apiRoutes = require('./routes/apiRoutes');
+const docsRoutes = require('./routes/docsRoutes');
+const openapi = require('./docs/openapi');
 const { notFound, errorHandler } = require('./middleware/errors');
 const { exposeCsrfToken, csrfProtection, sameOrigin, noStore } = require('./middleware/security');
 
@@ -116,6 +118,7 @@ const orderLimiter = rateLimit({
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'los-magueyes-web' }));
+app.use('/api-docs', docsRoutes(openapi, { csrfEnabled: true }));
 app.use('/', publicRoutes);
 app.use('/auth', noStore, authLimiter, authRoutes);
 app.use('/admin', noStore, adminRoutes);

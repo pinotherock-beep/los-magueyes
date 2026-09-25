@@ -2,11 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const { sequelize } = require('../../src/config/database');
+const docsRoutes = require('../../src/routes/docsRoutes');
+const openapi = require('../../src/docs/catalogOpenapi');
 
 const app = express();
 const PORT = Number(process.env.CATALOG_PORT) || 4001;
 app.disable('x-powered-by');
 app.use(helmet());
+app.use('/api-docs', docsRoutes(openapi));
 
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'catalog-service' }));
 app.get('/api/catalog', async (req, res, next) => {

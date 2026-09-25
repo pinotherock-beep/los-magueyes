@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <meta name="docs-csrf-enabled" content="<%= csrfEnabled %>">
+  <title><%= title %> | Swagger UI</title>
+  <link rel="stylesheet" href="/api-docs/assets/swagger-ui.css">
+  <link rel="stylesheet" href="/api-docs/assets/docs.css">
+  <script src="/api-docs/assets/swagger-ui-bundle.js" defer></script>
+  <script src="/api-docs/assets/initializer.js" defer></script>
+</head>
+<body>
+  <header class="docs-header">
+    <div>
+      <strong><%= title %></strong>
+      <p>Explora las rutas, consulta ejemplos y prueba las solicitudes.</p>
+    </div>
+    <nav aria-label="Enlaces de documentación">
+      <% if (csrfEnabled) { %>
+        <a href="/">Ir al sitio</a>
+        <a href="/auth/login" target="_blank" rel="noopener">Iniciar sesión</a>
+      <% } %>
+      <a href="/api-docs/openapi.json" download="openapi.json">Descargar OpenAPI</a>
+    </nav>
+  </header>
+  <% if (csrfEnabled) { %>
+    <p class="docs-notice">Para administrar, inicia sesión en otra pestaña de este sitio y vuelve aquí. Las pruebas POST guardan cambios en este entorno. El token CSRF se agrega automáticamente.</p>
+  <% } %>
+  <main id="swagger-ui" aria-label="Documentación interactiva de rutas"></main>
+  <noscript>Activa JavaScript para usar Swagger UI o descarga la especificación OpenAPI.</noscript>
+</body>
+</html>

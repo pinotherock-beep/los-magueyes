@@ -1,0 +1,7 @@
+body { margin: 0; background: #fafafa; }
+.docs-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding: 1.5rem 3%; background: #243a2a; color: #fff; font: 1rem/1.5 system-ui, sans-serif; }
+.docs-header strong { font-size: 1.3rem; }
+.docs-header p { margin: .25rem 0 0; }
+.docs-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; }
+.docs-header a { color: #fff; text-underline-offset: .2em; }
+.docs-notice { margin: 1rem 3%; padding: 1rem; border-left: 4px solid #9c741d; background: #fff7df; color: #403417; font: .95rem/1.5 system-ui, sans-serif; }
